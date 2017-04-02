@@ -28,16 +28,19 @@ public class Game
     private JLabel score, instructions;
     private int highScore;
     private JPanel[][] panels;
+    private JPanel panelHolder;
     private JButton startButton; //might not have startButton
     
     public Game()
     {
-        
+        initializePanels();
         initializeKeys();
+        
         
         frame = new JFrame();
         frame.setSize(600,600);
         frame.setTitle("3072 Game");
+        frame.add(panelHolder);
         //frame.add(mainPanel);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
@@ -51,19 +54,31 @@ public class Game
             {
                 if(event.getKeyCode() == KeyEvent.VK_LEFT) 
 		{
-                    
+                    if(isValidMove("Left"))
+                    {
+                        
+                    }
                 }
                 else if(event.getKeyCode() == KeyEvent.VK_RIGHT)
                 {
-                   
+                    if(isValidMove("Right"))
+                    {
+                        
+                    }
                 }
                 else if(event.getKeyCode() == KeyEvent.VK_DOWN)
                 {
-                    
+                    if(isValidMove("Down"))
+                    {
+                        
+                    }
                 }
                 else if(event.getKeyCode() == KeyEvent.VK_UP)
                 {
-                    
+                    if(isValidMove("Up"))
+                    {
+                        
+                    }
                 }
             }
 
@@ -77,8 +92,45 @@ public class Game
 
         }
         KeyListener listener = new KeyBoardListener();
-        //tetrisPanel.addKeyListener(listener);
-        //tetrisPanel.setFocusable(true);
+        panelHolder.addKeyListener(listener);
+        panelHolder.setFocusable(true);
+    }
+    
+    public void initializePanels()
+    {
+        panels = new JPanel[4][4];
+        panelHolder = new JPanel();
+        panelHolder.setLayout(new GridLayout(4,4));
+        for(int i = 0; i<4;  i++)
+        {
+            for(int k = 0; k<4; k++)
+            {
+                panels[i][k] = new JPanel();
+                panelHolder.add(panels[i][k]);
+            }
+        }
+    }
+    
+    public boolean isValidMove(String direction)
+    {
+        if(direction == "Left")
+        {
+            
+        }
+        else if(direction == "Up")
+        {
+            
+        }
+        else if(direction == "Right")
+        {
+            
+        }
+        else //Direction == "Down"
+        {
+            
+        }
+        
+        return false;
     }
     
 }
