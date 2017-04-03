@@ -25,17 +25,19 @@ import java.awt.event.KeyListener;
 public class Game
 {
     private JFrame frame;
-    private JLabel score, instructions;
-    private int highScore;
+    private JLabel instructions;
     private JPanel[][] panels;
     private JPanel panelHolder;
     private JButton startButton; //might not have startButton
+    private int availableSquares;
+    private int[] allSquares;
     
     public Game()
     {
         initializePanels();
         initializeKeys();
-        
+        availableSquares = 16;
+        allSquares = new int[16];
         
         frame = new JFrame();
         frame.setSize(600,600);
@@ -105,7 +107,7 @@ public class Game
         {
             for(int k = 0; k<4; k++)
             {
-                panels[i][k] = new JPanel();
+                panels[i][k] = new JPanelMod(0);
                 panelHolder.add(panels[i][k]);
             }
         }
@@ -125,7 +127,7 @@ public class Game
         {
             
         }
-        else //Direction == "Down"
+        else //direction == "Down"
         {
             
         }
@@ -133,4 +135,27 @@ public class Game
         return false;
     }
     
+    public void generateNumber()
+    {
+        int whichBox = (int)(Math.random()*availableSquares)+1;
+        int index = 0;
+        for(int i = 0; i<16; ++i)
+        {
+            if(allSquares[i] == 0)
+            {
+                ++index;
+                if(index==whichBox)
+                    break;
+            }
+        }    
+        
+        --availableSquares;
+        panels[index/4][index%4] = new JPanelMod(3);
+    }
+    
+    public void combineNumbers(int index1, int index2)
+    {
+        
+        ++availableSquares;
+    }
 }
