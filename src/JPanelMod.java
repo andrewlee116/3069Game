@@ -11,34 +11,29 @@ import javax.swing.JPanel;
 public class JPanelMod extends JPanel
 {
     private JPanel copy;
-    private int dim, type;
+    private int num;
     
-    public JPanelMod(int dimensions, int type)
+    public JPanelMod(int num)
     {
         super(true);
-        dim = dimensions;
-        this.type = type;
+        this.num = num;
         makeCopy();
     }
     
     public void makeCopy()
     {
         copy = new JPanel();
-        if(dim==5)
-        {
-            copy.setLayout(new GridLayout(5,5));
-        }
-        else
-        {
-            copy.setLayout(new GridLayout(4,4));
-        }  
-        shade();
+        copy.setLayout(new GridLayout(1,1));
+        //shade();
+        copy.add(new JLabel("" + num));
     }
     
-    public void shade()
+    public int getNum()
     {
-        if(type==0)
-        {
+        return num;
+    }
+    /*public void shade()
+    {
             JPanel[][] future0 = new JPanel[5][5];
             for(int i = 0; i<5; i++)
             {
@@ -57,7 +52,7 @@ public class JPanelMod extends JPanel
             future0[2][2].setBorder(BorderFactory.createLineBorder(Color.black));
             future0[2][3].setBorder(BorderFactory.createLineBorder(Color.black));
         }
-    }
+    }*/
     
     public JPanel getCopy()
     {  
