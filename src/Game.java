@@ -26,18 +26,20 @@ public class Game
 {
     private JFrame frame;
     private JLabel instructions;
-    private JPanel[][] panels;
+    private JLabel [][] labels;
     private JPanel panelHolder;
     private JButton startButton; //might not have startButton
     private int availableSquares;
-    private int[] allSquares;
+    private int[][] allSquares;
     
     public Game()
     {
         initializePanels();
         initializeKeys();
         availableSquares = 16;
-        allSquares = new int[16];
+        allSquares = new int[4][4];
+        
+        generateNumber();
         
         frame = new JFrame();
         frame.setSize(600,600);
@@ -100,15 +102,17 @@ public class Game
     
     public void initializePanels()
     {
-        panels = new JPanel[4][4];
+        labels = new JLabel[4][4];
         panelHolder = new JPanel();
         panelHolder.setLayout(new GridLayout(4,4));
         for(int i = 0; i<4;  i++)
         {
             for(int k = 0; k<4; k++)
             {
-                panels[i][k] = new JPanelMod(0);
-                panelHolder.add(panels[i][k]);
+                labels[i][k] = new JLabel();
+                labels[i][k].setText("");
+                allSquares[i][k] = 0;
+                panelHolder.add(labels[i][k]);
             }
         }
     }
@@ -139,23 +143,63 @@ public class Game
     {
         int whichBox = (int)(Math.random()*availableSquares)+1;
         int index = 0;
-        for(int i = 0; i<16; ++i)
+        for(int i = 0; i<4; ++i)
         {
-            if(allSquares[i] == 0)
+            for(int j = 0; j<4; ++j)
             {
-                ++index;
-                if(index==whichBox)
-                    break;
+                if(allSquares[i][j] == 0)
+                {
+                    ++index;
+                    if(index==whichBox)
+                    {
+                        allSquares[i][j] = 3;
+                        break;
+                    }
+                }
             }
-        }    
-        
+        }  
         --availableSquares;
-        panels[index/4][index%4] = new JPanelMod(3);
+        labels[index/4][index%4].setText("3");
+        panelHolder.repaint();
     }
     
-    public void combineNumbers(int index1, int index2)
+    //direction: 0 = left; 1 = right; 2 = up; 3  = down
+    //this is called after the blocks are moved in the direction given (but not "combined" yet)
+    public void checkCombineNumbers(int direction)
     {
-        
+        if(direction == 0)
+        {
+            for(int col = 0; col<4; ++col)
+            {
+                for(int row = 0; row<3; ++row)
+                { 
+                    if(allSquares[col][row] == allSquares[col][row+1])
+                    {
+                        combineNumbers(col, row+1, col, row);
+                        --row;
+                    }
+                }
+            }
+        }
+        else if(direction ==1)
+        {
+            //same as above
+        }
+        else if(direction ==2)
+        {
+            
+        }
+        else
+        {
+            
+        }
+    }
+    
+    //combines 1 into 2 (direction)
+    public void combineNumbers(int col1, int row1, int col2, int row2)
+    {
+         allSquares[col1][row1] = 0;
+         //MOVE ALL THE SQUARES DOWN TOO
         ++availableSquares;
     }
 }
