@@ -34,10 +34,10 @@ public class Game
     
     public Game()
     {
-        initializePanels();
-        initializeKeys();
         availableSquares = 16;
         allSquares = new int[4][4];
+        initializePanels();
+        initializeKeys();
         
         generateNumber();
         
@@ -60,30 +60,41 @@ public class Game
 		{
                     if(isValidMove("Left"))
                     {
-                        
+                        moveNumbers(0);
+                        checkCombineNumbers(0);
                     }
                 }
                 else if(event.getKeyCode() == KeyEvent.VK_RIGHT)
                 {
                     if(isValidMove("Right"))
                     {
-                        
-                    }
-                }
-                else if(event.getKeyCode() == KeyEvent.VK_DOWN)
-                {
-                    if(isValidMove("Down"))
-                    {
-                        
+                        moveNumbers(1);
+                        checkCombineNumbers(1);
                     }
                 }
                 else if(event.getKeyCode() == KeyEvent.VK_UP)
                 {
                     if(isValidMove("Up"))
                     {
-                        
+                        moveNumbers(2);
+                        checkCombineNumbers(2);
                     }
                 }
+                else if(event.getKeyCode() == KeyEvent.VK_DOWN)
+                {
+                    if(isValidMove("Down"))
+                    {
+                        moveNumbers(3);
+                        checkCombineNumbers(3);
+                    }
+                }
+                else
+                    return;
+                
+                if(availableSquares==0)
+                    gameOver();
+                else
+                    generateNumber();
             }
 
             @Override
@@ -123,14 +134,15 @@ public class Game
         {
             
         }
-        else if(direction == "Up")
-        {
-            
-        }
         else if(direction == "Right")
         {
             
         }
+        else if(direction == "Up")
+        {
+            
+        }
+        
         else //direction == "Down"
         {
             
@@ -142,7 +154,7 @@ public class Game
     public void generateNumber()
     {
         int whichBox = (int)(Math.random()*availableSquares)+1;
-        int index = 0;
+        int index = 0; //make equal to -1 ???
         for(int i = 0; i<4; ++i)
         {
             for(int j = 0; j<4; ++j)
@@ -153,12 +165,14 @@ public class Game
                     if(index==whichBox)
                     {
                         allSquares[i][j] = 3;
+                        //or have some 9's too
                         break;
                     }
                 }
             }
         }  
         --availableSquares;
+        System.out.print(index/4); System.out.println(index%4);
         labels[index/4][index%4].setText("3");
         panelHolder.repaint();
     }
@@ -195,11 +209,50 @@ public class Game
         }
     }
     
+    //direction: 0 = left; 1 = right; 2 = up; 3  = down
+    //move all blocks as far as possible without combining (yet)
+    public void moveNumbers(int direction)
+    {
+        if(direction == 0)
+        {
+            for(int col = 1; col<4; ++col)
+            {
+                for(int row = 0; row<4; ++row)
+                { 
+                    if(allSquares[col-1][row] == 0 && allSquares[col][row]>0)
+                    {
+                        allSquares[col-1][row] = allSquares[col][row];
+                        allSquares[col][row] = 0;
+                        //UPDATE JLABEL
+                    }
+                }
+            }
+        }
+        else if(direction ==1)
+        {
+            //same as above
+        }
+        else if(direction ==2)
+        {
+            
+        }
+        else
+        {
+            
+        }
+    }
+    
     //combines 1 into 2 (direction)
     public void combineNumbers(int col1, int row1, int col2, int row2)
     {
          allSquares[col1][row1] = 0;
+         //put like if it's equal to zero, then the text is empty for JLabel
          //MOVE ALL THE SQUARES DOWN TOO
         ++availableSquares;
+    }
+    
+    public void gameOver()
+    {
+        //gameOver stuff
     }
 }
