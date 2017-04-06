@@ -91,7 +91,7 @@ public class Game
                 else
                     return;
                 
-                if(availableSquares==0)
+                if(!isValidMove("Left") && !isValidMove("Right") && !isValidMove("Up") && !isValidMove("Down"))
                     gameOver();
                 else
                     generateNumber();
@@ -116,11 +116,13 @@ public class Game
         labels = new JLabel[4][4];
         panelHolder = new JPanel();
         panelHolder.setLayout(new GridLayout(4,4));
+        panelHolder.setBorder(BorderFactory.createLineBorder(Color.black));
         for(int i = 0; i<4;  i++)
         {
             for(int k = 0; k<4; k++)
             {
                 labels[i][k] = new JLabel();
+                labels[i][k].setBorder(BorderFactory.createLineBorder(Color.black));
                 labels[i][k].setText("");
                 allSquares[i][k] = 0;
                 panelHolder.add(labels[i][k]);
@@ -128,11 +130,21 @@ public class Game
         }
     }
     
+    //checks if moving is possible (either by combining blocks or there is an empty space
     public boolean isValidMove(String direction)
     {
         if(direction == "Left")
         {
-            
+            for(int col = 0; col<4; ++col)
+            {
+                for(int row = 0; row<3; ++row)
+                { 
+                    if(allSquares[col][row] == allSquares[col][row+1] || (allSquares[col][row]==0 && allSquares[col][row+1]>0))
+                    {
+                        return true;
+                    }
+                }
+            }
         }
         else if(direction == "Right")
         {
@@ -142,7 +154,6 @@ public class Game
         {
             
         }
-        
         else //direction == "Down"
         {
             
@@ -153,8 +164,8 @@ public class Game
     
     public void generateNumber()
     {
-        int whichBox = (int)(Math.random()*availableSquares)+1;
-        int index = 0; //make equal to -1 ???
+        int whichBox = (int)(Math.random()*availableSquares);
+        int index = -1; //make equal to -1 ???
         for(int i = 0; i<4; ++i)
         {
             for(int j = 0; j<4; ++j)
@@ -173,7 +184,8 @@ public class Game
         }  
         --availableSquares;
         System.out.print(index/4); System.out.println(index%4);
-        labels[index/4][index%4].setText("3");
+        labels[index/4][index%4].setText("\t\t\t\t3"); //tried to use setHorizontalAlignment(SwingConstants.CENTER), but wasn't working
+        labels[index/4][index%4].repaint();
         panelHolder.repaint();
     }
     
