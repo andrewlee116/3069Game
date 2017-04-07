@@ -130,10 +130,36 @@ public class Game
         }
     }
     
-    //checks if moving is possible (either by combining blocks or there is an empty space
+    //checks if moving is possible (either if combining blocks is possible or there is an empty space)
     public boolean isValidMove(String direction)
     {
         if(direction == "Left")
+        {
+            for(int row = 0; row<4; ++row)
+            {
+                for(int col = 0; col<3; ++col)
+                { 
+                    if(allSquares[row][col] == allSquares[row][col+1] || (allSquares[row][col]==0 && allSquares[row][col+1]>0))
+                    {
+                        return true;
+                    }
+                }
+            }
+        }
+        else if(direction == "Right")
+        {
+            for(int row = 0; row<4; ++row)
+            {
+                for(int col = 3; col>0; --col)
+                { 
+                    if(allSquares[row][col] == allSquares[row][col-1] || (allSquares[row][col]==0 && allSquares[row][col-1]>0))
+                    {
+                        return true;
+                    }
+                }
+            }
+        }
+        else if(direction == "Up")
         {
             for(int col = 0; col<4; ++col)
             {
@@ -146,17 +172,18 @@ public class Game
                 }
             }
         }
-        else if(direction == "Right")
-        {
-            
-        }
-        else if(direction == "Up")
-        {
-            
-        }
         else //direction == "Down"
         {
-            
+            for(int col = 0; col<4; ++col)
+            {
+                for(int row = 3; row>0; --row)
+                { 
+                    if(allSquares[col][row] == allSquares[col][row-1] || (allSquares[col][row]==0 && allSquares[col][row-1]>0))
+                    {
+                        return true;
+                    }
+                }
+            }
         }
         
         return false;
@@ -195,14 +222,14 @@ public class Game
     {
         if(direction == 0)
         {
-            for(int col = 0; col<4; ++col)
+            for(int row = 0; row<4; ++row)
             {
-                for(int row = 0; row<3; ++row)
+                for(int col = 0; col<3; ++col)
                 { 
-                    if(allSquares[col][row] == allSquares[col][row+1])
+                    if(allSquares[row][col] == allSquares[row][col+1])
                     {
-                        combineNumbers(col, row+1, col, row);
-                        --row;
+                        combineNumbers(row, col+1, row, col);
+                        --col;
                     }
                 }
             }
@@ -227,14 +254,14 @@ public class Game
     {
         if(direction == 0)
         {
-            for(int col = 1; col<4; ++col)
+            for(int row = 0; row<4; ++row)
             {
-                for(int row = 0; row<4; ++row)
+                for(int col = 1; col<4; ++col)
                 { 
-                    if(allSquares[col-1][row] == 0 && allSquares[col][row]>0)
+                    if(allSquares[row][col-1] == 0 && allSquares[row][col]>0)
                     {
-                        allSquares[col-1][row] = allSquares[col][row];
-                        allSquares[col][row] = 0;
+                        allSquares[row][col-1] = allSquares[row][col];
+                        allSquares[row][col] = 0;
                         //UPDATE JLABEL
                     }
                 }
@@ -255,9 +282,9 @@ public class Game
     }
     
     //combines 1 into 2 (direction)
-    public void combineNumbers(int col1, int row1, int col2, int row2)
+    public void combineNumbers(int row1, int col1, int row2, int col2)
     {
-         allSquares[col1][row1] = 0;
+         allSquares[row1][col1] = 0;
          //put like if it's equal to zero, then the text is empty for JLabel
          //MOVE ALL THE SQUARES DOWN TOO
         ++availableSquares;
