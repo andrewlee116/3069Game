@@ -165,7 +165,7 @@ public class Game
             {
                 for(int row = 0; row<3; ++row)
                 { 
-                    if(allSquares[col][row] == allSquares[col][row+1] || (allSquares[col][row]==0 && allSquares[col][row+1]>0))
+                    if(allSquares[row][col] == allSquares[row+1][col] || (allSquares[row][col]==0 && allSquares[row+1][col]>0))
                     {
                         return true;
                     }
@@ -178,7 +178,7 @@ public class Game
             {
                 for(int row = 3; row>0; --row)
                 { 
-                    if(allSquares[col][row] == allSquares[col][row-1] || (allSquares[col][row]==0 && allSquares[col][row-1]>0))
+                    if(allSquares[row][col] == allSquares[row-1][col] || (allSquares[row][col]==0 && allSquares[row-1][col-1]>0))
                     {
                         return true;
                     }
@@ -236,15 +236,45 @@ public class Game
         }
         else if(direction ==1)
         {
-            //same as above
+            for(int row = 0; row<4; ++row)
+            {
+                for(int col = 3; col>0; --col)
+                { 
+                    if(allSquares[row][col] == allSquares[row][col-1])
+                    {
+                        combineNumbers(row,col-1,row,col);
+                        --col;
+                    }
+                }
+            }
         }
         else if(direction ==2)
         {
-            
+            for(int col = 0; col<4; ++col)
+            {
+                for(int row = 0; row<3; ++row)
+                { 
+                    if(allSquares[row][col] == allSquares[row+1][col])
+                    {
+                        combineNumbers(row+1,col,row,col);
+                        --row;
+                    }
+                }
+            }
         }
         else
         {
-            
+            for(int col = 0; col<4; ++col)
+            {
+                for(int row = 3; row>0; --row)
+                { 
+                    if(allSquares[row][col] == allSquares[row-1][col])
+                    {
+                        combineNumbers(row,col,row-1,col);
+                        --row;
+                    }
+                }
+            }
         }
     }
     
